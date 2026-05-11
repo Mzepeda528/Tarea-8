@@ -28,7 +28,7 @@ public:
         cn.abrir_conexion();
 
         if (cn.getConector()) {
-            string t = to_string(telefono); // Corregido 'telegono'
+            string t = to_string(telefono); 
             string id_ts_str = to_string(id_tipo_sangre);
 
             // Corregido 'strig' y nombres de variables
@@ -78,6 +78,72 @@ public:
         }
         else {
             cout << "Error al conectar a la base de datos" << endl;
+        }
+        cn.cerrar_conexion();
+    }
+    void actualizar () {
+        int q_estado = 0;
+        ConexionBD cn = ConexionBD();
+        cn.abrir_conexion();
+
+        if (cn.getConector()) {
+            string t = to_string(telefono);
+            string id_ts_str = to_string(id_tipo_sangre);
+            string id_e = to_string(id_estudiante);
+            // Corregido 'strig' y nombres de variables
+            string consulta = "update estudiantes set codigo = '" + codigo + "' ,nombres= '" + nombres + "',apellidos= '" + apellidos + "',direccion='" + direccion + "',telefono=" + t + ",fecha_nacimiento='" + fecha_nacimiento + "',id_tipo_sangre=" + id_ts_str + " where id_estudiante = "+ id_e + "";
+
+            const char* c = consulta.c_str();
+            q_estado = mysql_query(cn.getConector(), c);
+
+            if (!q_estado) {
+                cout << "Modificacion de Datos Exitoso..." << endl;
+            }
+            else {
+                cout << "xxxx Consulta Fallida xxxx..." << endl;
+            }
+        }
+        else {
+            cout << "xxxx Conexion Fallida xxxx " << endl;
+        }
+        cn.cerrar_conexion();
+    }
+
+    // AGREGÁ ESTO PARA QUE SE QUITEN LOS ERRORES ROJOS
+    void setId_estudiante(int id) { id_estudiante = id; }
+    void setCodigo(string cod) { codigo = cod; }
+    void setNombres(string nom) { nombres = nom; }
+    void setApellidos(string ape) { apellidos = ape; }
+    void setDireccion(string dir) { direccion = dir; }
+    void setTelefono(int tel) { telefono = tel; }
+    void setFecha_nacimiento(string fn) { fecha_nacimiento = fn; }
+    void setId_Tipo_Sangre(int ts) { id_tipo_sangre = ts; }
+
+
+    void borrar() {
+        int q_estado = 0;
+        ConexionBD cn = ConexionBD();
+        cn.abrir_conexion();
+
+        if (cn.getConector()) {
+            string t = to_string(telefono);
+            string id_ts_str = to_string(id_tipo_sangre);
+            string id_e = to_string(id_estudiante);
+            // Corregido 'strig' y nombres de variables
+            string consulta = "delete from estudiantes  where id_estudiante = " + id_e + "";
+
+            const char* c = consulta.c_str();
+            q_estado = mysql_query(cn.getConector(), c);
+
+            if (!q_estado) {
+                cout << "Eliminacion de Datos Exitoso..." << endl;
+            }
+            else {
+                cout << "xxxx Consulta Fallida xxxx..." << endl;
+            }
+        }
+        else {
+            cout << "xxxx Conexion Fallida xxxx " << endl;
         }
         cn.cerrar_conexion();
     }
